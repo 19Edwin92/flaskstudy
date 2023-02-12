@@ -52,16 +52,25 @@ def study02():
   return render_template('study02.html')
 
 # 03 HTTP 메소드 실습편
-@app.route('/login',methods = ['POST', 'GET'])
-def login():
+#study03-01.html 경로
+@app.route('/study0301')
+def study0301():
+  return render_template('study03-01.html')
+
+#study03-02.html 경로
+@app.route('/study0302')
+def study0302():
+  return render_template('study03-02.html')
+
+
+@app.route('/study03',methods = ['POST', 'GET'])
+def study03():
    if request.method == 'POST':
-      user = request.form['nm']
-      return redirect(url_for('success',name = user))
-   else:
-      user = request.args.get('nm')
-      return redirect(url_for('success',name = user))
-
-
+      #해당내용을 한 번에 가져가는 것이 가능하다.
+      result = request.form
+      name = request.form['name']
+      return render_template('study03-02.html', result = result, name=name)
+    
 if __name__ == '__main__':
   app.run(debug=True)
   
