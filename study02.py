@@ -1,6 +1,7 @@
 # REdirect 와 HTTP 메소드에 대해서 살펴보자. 
-# REdirect 메소드, 5째줄부터 30째줄까지 - 첫줄에  import redirect, url_for 추가 
-# HTTP 메소드, 32째줄부터 - 첫줄에  import request 추가 
+# REdirect 메소드, 6번째줄부터 31번째줄까지 - 첫줄에  import redirect, url_for 추가 
+# HTTP 메소드(이론편), 33번째줄부터 - 52번쨰줄에  import request 추가 
+# HTTP 메소드(실습편), 54번째줄부터 - 번쨰줄에 
 
 # 01 Redirect
 from flask import Flask, redirect, url_for, request, render_template
@@ -29,7 +30,7 @@ def hello_guest():
 def hello_user(username):
   return '안녕 redirect 알아보기, %s님 반갑습니다.' % username  
 
-# 02 HTTP 메소드 
+# 02 HTTP 메소드 이론편
 #상황발생 : HTTP메소드를 실행시킬 조건의 상황 설정
 @app.route('/login',methods = ['POST', 'GET'])
 def login():
@@ -49,6 +50,17 @@ def success(name):
 @app.route('/study02')
 def study02():
   return render_template('study02.html')
+
+# 03 HTTP 메소드 실습편
+@app.route('/login',methods = ['POST', 'GET'])
+def login():
+   if request.method == 'POST':
+      user = request.form['nm']
+      return redirect(url_for('success',name = user))
+   else:
+      user = request.args.get('nm')
+      return redirect(url_for('success',name = user))
+
 
 if __name__ == '__main__':
   app.run(debug=True)
