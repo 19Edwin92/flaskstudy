@@ -1,5 +1,25 @@
 <html>
 <body>
 </body>
-안녕 <br> {{ name }}님 반갑습니다.
+
+<!-- {% if result=="fail" %}
+edwin이 아닙니다. 
+{% else %}
+안녕 <br>
+{{ name }}님 반갑습니다.
+{% endif %} -->
+<table border = 1>
+   {% for key, value in result.items() %}
+   
+      <tr>
+         <th> {{ key }} </th>
+         <td> {{ value }} </td>
+      </tr>
+      
+   {% endfor %}
+</table>
+
+<br><br><br><br><br><br>
+{{ result }}
+
 </html>

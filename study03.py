@@ -1,16 +1,18 @@
 # REdirect 와 HTTP 메소드에 대해서 살펴보자. 
-# REdirect 메소드, 6번째줄부터 31번째줄까지 - 첫줄에  import redirect, url_for 추가 
-# HTTP 메소드(이론편), 33번째줄부터 - 52번쨰줄에  import request 추가 
-# HTTP 메소드(실습편), 54번째줄부터 - 번쨰줄에 
+# REdirect 메소드, 7번째줄부터 32번째줄까지 - 첫줄에  import redirect, url_for 추가 
+# HTTP 메소드(이론편), 34번째줄부터 - 53번쨰줄,  import request 추가 
+# HTTP 메소드(실습편), 55번째줄부터 - 76번쨰줄, 
+# 쿠키와 세션, 78번째줄부터 - 번째줄,
 
 # 01 Redirect
-from flask import Flask, redirect, url_for, request, render_template
+from flask import Flask, redirect, url_for, request, render_template, make_response, session
 app = Flask(__name__)
+app.secret_key = 'any random string'
 
 #메인페이지 
-@app.route('/')
-def home():
-  return '안녕 redirect 알아보기에 대해서 알아보자. http://127.0.0.1:5000/redirectpage/guest 또는 http://127.0.0.1:5000/redirectpage/아무거나 입력해보자.'
+# @app.route('/')
+# def home():
+#   return '안녕 redirect 알아보기에 대해서 알아보자. http://127.0.0.1:5000/redirectpage/guest 또는 http://127.0.0.1:5000/redirectpage/아무거나 입력해보자.'
 
 #redirect를 발생시킬 페이지
 @app.route('/redirectpage/<name>')
@@ -73,6 +75,38 @@ def study03():
       # else:
       #   return render_template('study03-02.html', result="success", name=name)
       return render_template('study03-02.html', result=result)
+    
+# 3 쿠키와 세션
+@app.route('/setcookie', methods = ['POST', 'GET'])
+def setcookie():
+  if request.method == 'POST':
+    users = request.form['nm']
+    resp = make_response("Cookie Setting Complete")
+    resp.set_cookie('userID', users)
+    return resp
+
+@app.route('/getcookie')
+def getcookie():
+   name = request.cookies.get('userID')
+   return '<h1>welcome '+name+'</h1>' 
+
+@app.route('/')
+def index():
+  if 'username' in session:
+    username = session['username']
+    return 'Logged in as ' + username + '<br>' + \
+    "<b><a href = '/logout'>click here to log out</a></b>"
+  else:
+    return "You are not logged in <br><a href = '/login'></b>" + \
+    "click here to log in</b></a>"
+
+
+@app.route('/study03cookie')
+def study03cookie():
+  return render_template('study04.html')
+
+    
+    
     
 if __name__ == '__main__':
   app.run(debug=True)
